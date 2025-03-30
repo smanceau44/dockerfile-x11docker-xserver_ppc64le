@@ -15,7 +15,12 @@ FROM ppc64le/debian:bullseye AS nxbuild
 
 # build patched nxagent from source. Allows to run with /tmp/.X11-unix not to be owned by root.
 # https://github.com/ArcticaProject/nx-libs/issues/1034
-RUN echo "deb-src http://deb.debian.org/debian bullseye main" >> /etc/apt/sources.list && \
+RUN echo "deb http://debian.mirrors.ovh.net/debian bullseye main" > /etc/apt/sources.list && \
+    echo "deb http://debian.mirrors.ovh.net/debian-security bullseye-security main" >> /etc/apt/sources.list && \
+    echo "deb http://debian.mirrors.ovh.net/debian bullseye-updates main" >> /etc/apt/sources.list && \
+    echo "deb-src http://debian.mirrors.ovh.net/debian bullseye main" >> /etc/apt/sources.list && \
+    cat /etc/apt/sources.list && \
+    sleep 5 && \
     apt-get update && \
     apt-get install -y build-essential devscripts && \
     apt-get build-dep -y nxagent && \
